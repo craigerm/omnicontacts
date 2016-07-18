@@ -23,7 +23,7 @@ module OmniContacts
 
       def fetch_contacts_using_access_token access_token, token_type
         fetch_current_user(access_token, token_type)
-        contacts_response = https_get(@contacts_host, @contacts_path, {}, contacts_req_headers(access_token, token_type))
+        contacts_response = https_get(@contacts_host, @contacts_path, contacts_req_params, contacts_req_headers(access_token, token_type))
         contacts_from_response contacts_response
       end
 
@@ -34,6 +34,10 @@ module OmniContacts
       end
 
       private
+
+      def contacts_req_params
+        {"$top" => "1000"}
+      end
 
       def contacts_req_headers token, token_type
         { "Authorization" => "#{token_type} #{token}" }
